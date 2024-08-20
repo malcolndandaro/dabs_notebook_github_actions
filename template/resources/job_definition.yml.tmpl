@@ -1,0 +1,77 @@
+resources:
+  jobs:
+    {{.project_name}}_job:
+      name: {{.project_name}}_job
+      schedule:
+        # Run every day at 8:37 AM
+        quartz_cron_expression: '44 37 8 * * ?'
+        timezone_id: Europe/Amsterdam
+
+      email_notifications:
+        on_failure:
+          - ${workspace.current_user.userName}
+
+      tasks:
+        - task_key: notebook_task
+          existing_cluster_id: 0722-135959-ef2hdstn
+          notebook_task:
+            notebook_path: ../src/notebook.ipynb
+
+        
+      job_clusters:
+        - job_cluster_key: job_cluster
+          new_cluster:
+            spark_version: 14.3.x-scala2.12
+            node_type_id: Standard_D3_v2
+            autoscale:
+                min_workers: 1
+                max_workers: 1
+
+targets:
+  dev:
+    git:
+      branch: dev
+    resources:
+      jobs:
+        {{.project_name}}_job:
+          name: {{.project_name}}_job
+          tasks:
+            - task_key: notebook_task
+              existing_cluster_id: 0722-135959-ef2hdstn
+              notebook_task:
+                base_parameters:
+                  target: ${bundle.target}
+                  catalog: ${var.catalog}
+                  schema: ${var.schema}
+
+  staging:
+    git:
+      branch: staging
+    resources:
+      jobs:
+        {{.project_name}}_job:
+          name: {{.project_name}}_job
+          tasks:
+            - task_key: notebook_task
+              existing_cluster_id: 0722-135959-ef2hdstn
+              notebook_task:
+                base_parameters:
+                  target: ${bundle.target}
+                  catalog: ${var.catalog}
+                  schema: ${var.schema}
+
+  prod:
+    git:
+      branch: main
+    resources:
+      jobs:
+        {{.project_name}}_job:
+          name: {{.project_name}}_job
+          tasks:
+            - task_key: notebook_task
+              job_cluster_key: job_cluster
+              notebook_task:
+                base_parameters:
+                  target: ${bundle.target}
+                  catalog: ${var.catalog}
+                  schema: ${var.schema}
