@@ -49,7 +49,7 @@ targets:
       branch: staging
     resources:
       jobs:
-        staging__{{.project_name}}_job:
+        {{.project_name}}_job:
           name: staging__{{.project_name}}_job
           tasks:
             - task_key: notebook_task
