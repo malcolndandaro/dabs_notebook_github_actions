@@ -9,13 +9,15 @@ concurrency: 1
 # Trigger this workflow whenever a pull request is pushed to the repo's
 # main branch.
 on:
-  push:
+  pull_request_target:
     branches:
-      - main
+        - main
+    types: 
+        - closed
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true && github.event.action == 'closed'
+    if: github.event.pull_request.merged == true
     name: "Deploy bundle"
     runs-on: ubuntu-latest
 
