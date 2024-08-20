@@ -49,8 +49,8 @@ targets:
       branch: staging
     resources:
       jobs:
-        {{.project_name}}_job:
-          name: {{.project_name}}_job
+        staging__{{.project_name}}_job:
+          name: staging__{{.project_name}}_job
           tasks:
             - task_key: notebook_task
               existing_cluster_id: 0722-135959-ef2hdstn
