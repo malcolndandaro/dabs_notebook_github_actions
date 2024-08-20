@@ -15,6 +15,7 @@ on:
 
 jobs:
   deploy:
+    if: ithub.event.pull_request.merged == true && github.event.action == 'closed'
     name: "Deploy bundle"
     runs-on: ubuntu-latest
 
