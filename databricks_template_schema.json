@@ -5,7 +5,37 @@
        "default": "bronze_template",
        "description": "What is the name of the bundle you want to create?",
        "order": 1
-    }
+    },
+    "workspace_url": {
+       "type": "string",
+       "default": "https://adb-XXXXXXXXXX.X.azuredatabricks.net",
+       "description": "Workspace that will be used for deployment",
+       "order": 2
+    },
+    "catalog": {
+       "type": "string",
+       "default": "default",
+       "description": "Base catalog that will be used in the bundle",
+       "order": 3
+    },
+    "dev_schema": {
+      "type": "string",
+      "default": "bundle_dev",
+      "description": "Development schema that will be used by the bundle, this will run on commits that target the dev branch. Schema will be auto created if it does not exists.",
+      "order": 4
+   },
+   "staging_schema": {
+      "type": "string",
+      "default": "bundle_staging",
+      "description": "Staging schema that will be used by the bundle, this will run when a pull request is created from dev -> main. Schema will be auto created if it does not exists.",
+      "order": 5
+   },
+   "prod_schema": {
+      "type": "string",
+      "default": "bundle_prod",
+      "description": "Prod schema that will be used by the bundle, this will run when a pull request is merged from dev -> main branch. Schema will be auto created if it does not exists.",
+      "order": 6
+   }
     },
     "success_message": "\nYour bundle '{{.project_name}}' has been created."
  }
